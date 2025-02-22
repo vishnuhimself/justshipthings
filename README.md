@@ -1,6 +1,6 @@
 # Just Ship Things
 
-A showcase of products shipped with passion and purpose.
+A showcase of products shipped by [Vishnu](https://heyvish.com)
 
 ## Setup
 
