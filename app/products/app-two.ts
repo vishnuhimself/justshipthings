@@ -11,7 +11,7 @@ export const appTwo: Product = {
     icon: "app-store"
   },
   tags: ["iOS", "React Native", "Expo", "RevenueCat"],
-  launchDate: "March 2024",
+  launchDate: "March 2025",
   status: "beta",
   details: {
     overview: "",
