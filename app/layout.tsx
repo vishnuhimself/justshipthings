@@ -80,7 +80,7 @@ export default function RootLayout({
       <body className={`${spaceGrotesk.variable} ${outfit.variable} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem={false}
           storageKey="justshipthings-theme"
         >

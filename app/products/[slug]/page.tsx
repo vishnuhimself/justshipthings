@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { ChevronRight, Star } from 'lucide-react';
+import { ChevronRight, Star, ExternalLink } from 'lucide-react';
 import { products } from '@/app/products';
 import { Header } from '@/app/components/header';
 import { AnimatedBackground } from '@/app/components/animated-background';
@@ -13,17 +13,18 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = products.find((p) => p.id === params.slug);
+  const { slug } = await params;
+  const product = products.find((p) => p.id === slug);
   
   if (!product) {
     return {};
   }
 
   return {
-    title: product.name,
+    title: `${product.name} | Just Ship Things`,
     description: product.description,
     openGraph: {
-      title: product.name,
+      title: `${product.name} | Just Ship Things`,
       description: product.description,
       images: [
         {
@@ -38,7 +39,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProductPage({ params }: Props) {
-  const product = products.find((p) => p.id === params.slug);
+  const { slug } = await params;
+  const product = products.find((p) => p.id === slug);
 
   if (!product) {
     notFound();
@@ -52,7 +54,11 @@ export default async function ProductPage({ params }: Props) {
       <Header />
       <main className="min-h-screen bg-white/80 dark:bg-gray-950">
         {/* Hero Section */}
-        <div className="relative bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950 pt-24 pb-4 sm:pt-32">
+        <div className="relative bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950 pt-24 pb-12 sm:pt-32 overflow-hidden">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-radial from-teal-100/30 to-transparent dark:from-teal-900/10 opacity-70 dark:opacity-30" />
+          </div>
+          
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="relative z-10">
               {/* Product Status Badge */}
@@ -68,7 +74,7 @@ export default async function ProductPage({ params }: Props) {
 
               {/* Product Icon & Title */}
               <div className="text-center">
-                <div className="mx-auto mb-6 relative h-32 w-32 overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-900/10 dark:ring-white/10">
+                <div className="mx-auto mb-6 relative h-32 w-32 overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-900/10 dark:ring-white/10 shadow-lg">
                   <Image
                     src={product.iconUrl}
                     alt={`${product.name} icon`}
@@ -87,26 +93,30 @@ export default async function ProductPage({ params }: Props) {
 
               {/* Tags & CTA */}
               <div className="mt-8 flex flex-col items-center gap-6">
-                {/* <div className="flex flex-wrap justify-center gap-3">
-                  {product.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium 
-                               bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300
-                               ring-1 ring-inset ring-gray-300/20 dark:ring-white/10"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div> */}
+                {product.tags && product.tags.length > 0 && (
+                  <div className="flex flex-wrap justify-center gap-3">
+                    {product.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium 
+                                 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300
+                                 ring-1 ring-inset ring-gray-300/20 dark:ring-white/10"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                
                 {product.link && (
                   <a
                     href={product.link}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-full
-                             bg-black dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 
-                             dark:hover:bg-gray-100 transition-colors duration-200"
+                             bg-gradient-to-r from-teal-600 to-emerald-600 dark:from-teal-500 dark:to-emerald-500 
+                             text-white shadow-md hover:shadow-lg hover:from-teal-500 hover:to-emerald-500 
+                             dark:hover:from-teal-400 dark:hover:to-emerald-400 transition-all duration-200"
                   >
                     {product.storeButton.icon === 'app-store' && (
                       <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current">
@@ -124,28 +134,30 @@ export default async function ProductPage({ params }: Props) {
 
         {/* Content Sections - Only show if not coming soon */}
         {!isComingSoon && (
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
             <div className="mx-auto max-w-3xl">
               {/* Overview */}
               {product.details.overview && (
                 <section className="mb-16">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6 inline-flex items-center">
+                    <span className="bg-gradient-to-r from-teal-600 to-emerald-600 dark:from-teal-400 dark:to-emerald-400 h-8 w-1 rounded-full mr-3"></span>
                     Overview
                   </h2>
-                  <div className="prose prose-gray dark:prose-invert">
-                    <p>{product.details.overview}</p>
+                  <div className="prose prose-gray dark:prose-invert max-w-none">
+                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{product.details.overview}</p>
                   </div>
                 </section>
               )}
 
               {/* Technologies */}
-              {/* {product.details.technologies.length > 0 && (
+              {/* {product.details.technologies && product.details.technologies.length > 0 && (
                 <section className="mb-16">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6 inline-flex items-center">
+                    <span className="bg-gradient-to-r from-teal-600 to-emerald-600 dark:from-teal-400 dark:to-emerald-400 h-8 w-1 rounded-full mr-3"></span>
                     Built With
                   </h2>
                   <div className="flex flex-wrap gap-2">
-                    {product.details.technologies.map((tech) => (
+                    {product.details.technologies.map((tech, index) => (
                       <span
                         key={tech}
                         className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium
@@ -159,9 +171,10 @@ export default async function ProductPage({ params }: Props) {
               )} */}
 
               {/* Screenshots */}
-              {product.details.screenshots.length > 0 && (
+              {product.details.screenshots && product.details.screenshots.length > 0 && (
                 <section className="mb-16">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6 inline-flex items-center">
+                    <span className="bg-gradient-to-r from-teal-600 to-emerald-600 dark:from-teal-400 dark:to-emerald-400 h-8 w-1 rounded-full mr-3"></span>
                     Screenshots
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -169,13 +182,13 @@ export default async function ProductPage({ params }: Props) {
                       <div
                         key={index}
                         className="relative aspect-[9/16] overflow-hidden rounded-2xl bg-gray-100 
-                                 dark:bg-gray-800 ring-1 ring-gray-900/10 dark:ring-white/10"
+                                 dark:bg-gray-800 ring-1 ring-gray-900/10 dark:ring-white/10 shadow-md group"
                       >
                         <Image
                           src={screenshot}
                           alt={`${product.name} screenshot ${index + 1}`}
                           fill
-                          className="object-cover"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
                           sizes="(min-width: 768px) 50vw, 100vw"
                         />
                       </div>
@@ -185,16 +198,22 @@ export default async function ProductPage({ params }: Props) {
               )}
 
               {/* Features */}
-              {product.details.features.length > 0 && (
+              {product.details.features && product.details.features.length > 0 && (
                 <section className="mb-16">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6 inline-flex items-center">
+                    <span className="bg-gradient-to-r from-teal-600 to-emerald-600 dark:from-teal-400 dark:to-emerald-400 h-8 w-1 rounded-full mr-3"></span>
                     Key Features
                   </h2>
                   <ul className="space-y-4">
                     {product.details.features.map((feature, index) => (
-                      <li key={index} className="flex gap-3">
-                        <ChevronRight className="h-6 w-6 flex-none text-teal-500" />
-                        <span className="text-gray-600 dark:text-gray-300">{feature}</span>
+                      <li 
+                        key={index} 
+                        className="flex gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors"
+                      >
+                        <div className="flex-none h-6 w-6 rounded-full bg-gradient-to-r from-teal-500 to-emerald-500 flex items-center justify-center text-white">
+                          <ChevronRight className="h-4 w-4" />
+                        </div>
+                        <span className="text-gray-700 dark:text-gray-300">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -204,14 +223,15 @@ export default async function ProductPage({ params }: Props) {
               {/* Testimonials */}
               {product.details.testimonials && product.details.testimonials.length > 0 && (
                 <section className="mb-16">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6 inline-flex items-center">
+                    <span className="bg-gradient-to-r from-teal-600 to-emerald-600 dark:from-teal-400 dark:to-emerald-400 h-8 w-1 rounded-full mr-3"></span>
                     What Users Say
                   </h2>
                   <div className="grid gap-6">
                     {product.details.testimonials.map((testimonial, index) => (
                       <blockquote
                         key={index}
-                        className="rounded-2xl bg-gray-50 dark:bg-gray-900 p-6 ring-1 ring-gray-900/5 dark:ring-white/10"
+                        className="rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-6 ring-1 ring-gray-900/5 dark:ring-white/10 shadow-sm hover:-translate-y-1 transition-transform duration-300"
                       >
                         <div className="flex gap-0.5 mb-4">
                           {[...Array(5)].map((_, i) => (
@@ -221,15 +241,20 @@ export default async function ProductPage({ params }: Props) {
                             />
                           ))}
                         </div>
-                        <p className="text-gray-600 dark:text-gray-400 mb-3">
+                        <p className="text-gray-600 dark:text-gray-300 mb-4 italic">
                           &ldquo;{testimonial.text}&rdquo;
                         </p>
-                        <footer>
-                          <div className="font-semibold text-gray-900 dark:text-white">
-                            {testimonial.author}
+                        <footer className="flex items-center gap-3">
+                          <div className="h-10 w-10 rounded-full bg-gradient-to-r from-teal-500 to-emerald-500 flex items-center justify-center text-white font-bold text-lg">
+                            {testimonial.author.charAt(0)}
                           </div>
-                          <div className="text-gray-600 dark:text-gray-400 text-sm">
-                            {testimonial.role}
+                          <div>
+                            <div className="font-semibold text-gray-900 dark:text-white">
+                              {testimonial.author}
+                            </div>
+                            <div className="text-gray-600 dark:text-gray-400 text-sm">
+                              {testimonial.role}
+                            </div>
                           </div>
                         </footer>
                       </blockquote>
@@ -241,38 +266,78 @@ export default async function ProductPage({ params }: Props) {
               {/* Pricing */}
               {product.details.pricing && product.details.pricing.length > 0 && (
                 <section>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6 inline-flex items-center">
+                    <span className="bg-gradient-to-r from-teal-600 to-emerald-600 dark:from-teal-400 dark:to-emerald-400 h-8 w-1 rounded-full mr-3"></span>
                     Pricing Plans
                   </h2>
-                  <div className="grid gap-6">
+                  <div className="grid gap-6 md:grid-cols-2">
                     {product.details.pricing.map((plan, index) => (
                       <div
                         key={index}
-                        className="rounded-2xl bg-gray-50 dark:bg-gray-900 p-6 ring-1 ring-gray-900/5 dark:ring-white/10"
+                        className={`rounded-2xl p-6 ring-1 ${
+                          plan.plan.includes('Yearly') || plan.plan.includes('Lifetime')
+                            ? 'bg-gradient-to-br from-teal-50 to-emerald-50 dark:from-teal-900/20 dark:to-emerald-900/20 ring-teal-200 dark:ring-teal-800'
+                            : 'bg-white dark:bg-gray-900 ring-gray-200 dark:ring-gray-800'
+                        } hover:-translate-y-1 transition-transform duration-300`}
                       >
-                        <div className="flex items-baseline justify-between gap-x-4">
-                          <h3 className="text-lg font-semibold leading-6 text-gray-900 dark:text-white">
-                            {plan.plan}
-                          </h3>
-                          {plan.price && (
-                            <p className="text-sm font-semibold text-teal-600 dark:text-teal-400">
-                              {plan.price}
-                            </p>
-                          )}
-                        </div>
-                        <ul className="mt-4 space-y-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                          {plan.plan}
+                        </h3>
+                        {plan.price && (
+                          <div className="mb-4">
+                            <span className="text-3xl font-bold text-gray-900 dark:text-white">{plan.price}</span>
+                            {plan.plan.includes('Monthly') && <span className="text-gray-500 dark:text-gray-400"> /month</span>}
+                            {plan.plan.includes('Yearly') && <span className="text-gray-500 dark:text-gray-400"> /year</span>}
+                          </div>
+                        )}
+                        <ul className="space-y-2 mb-6">
                           {plan.features.map((feature, featureIndex) => (
-                            <li key={featureIndex} className="flex gap-x-3">
-                              <ChevronRight className="h-5 w-5 flex-none text-teal-500" />
+                            <li key={featureIndex} className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                              <svg className="h-5 w-5 text-emerald-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                              </svg>
                               {feature}
                             </li>
                           ))}
                         </ul>
+                        {product.link && (
+                          <a
+                            href={product.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`inline-flex items-center justify-center w-full gap-1 px-4 py-2 text-sm font-medium rounded-lg
+                              ${plan.plan.includes('Yearly') || plan.plan.includes('Lifetime')
+                                ? 'bg-gradient-to-r from-teal-600 to-emerald-600 text-white hover:from-teal-500 hover:to-emerald-500'
+                                : 'bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700'
+                              } transition-colors`}
+                          >
+                            Get Started
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        )}
                       </div>
                     ))}
                   </div>
                 </section>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Coming Soon Section */}
+        {isComingSoon && (
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+            <div className="mx-auto max-w-3xl text-center">
+              <div
+                className="rounded-2xl bg-gradient-to-br from-teal-50 to-emerald-50 dark:from-teal-900/20 dark:to-emerald-900/20 p-8 sm:p-12 ring-1 ring-teal-100 dark:ring-teal-800/30"
+              >
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-4">
+                  Coming Soon! 😉
+                </h2>
+                <p className="text-gray-600 dark:text-gray-300 mb-8">
+                  We&apos;re working hard to bring {product.name} to you.
+                </p>
+              </div>
             </div>
           </div>
         )}

@@ -11,7 +11,7 @@ export const growthKit: Product = {
     icon: "app-store"
   },
   tags: ["iOS", "React Native", "Expo", "RevenueCat"],
-  launchDate: "February 2024",
+  launchDate: "February 2025",
   status: "live",
   details: {
     overview: "GrowthKit is your go-to app for tracking height, weight, BMI, and more. Whether you're monitoring children's growth milestones or focusing on your own healthy weight goals, GrowthKit provides the tools you need to stay motivated and celebrate progress.",
