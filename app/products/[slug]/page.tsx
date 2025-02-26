@@ -5,6 +5,13 @@ import { products } from '@/app/products';
 import { Header } from '@/app/components/header';
 import { AnimatedBackground } from '@/app/components/animated-background';
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
+
+// Dynamically import the UGCVidGenUsage component
+const UGCVidGenUsage = dynamic(() => import('@/app/products/ugc-vid-gen-usage').then(mod => mod.UGCVidGenUsage), {
+  ssr: true,
+  loading: () => <div className="p-4 text-center">Loading usage guide...</div>
+});
 
 interface Props {
   params: {
@@ -65,10 +72,16 @@ export default async function ProductPage({ params }: Props) {
               <div className="mb-8 flex justify-center">
                 <span className={`inline-flex items-center rounded-full px-4 py-1 text-sm font-medium
                   ${product.status === 'live' 
-                    ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400'
+                    ? product.storeButton?.icon === 'web' 
+                      ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400' 
+                      : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400'
                     : 'bg-yellow-50 text-yellow-700 dark:bg-yellow-500/10 dark:text-yellow-400'}`}
                 >
-                  {product.status === 'live' ? 'Live on App Store' : 'Coming Soon'}
+                  {product.status === 'live' 
+                    ? product.storeButton?.icon === 'web' 
+                      ? 'Available on GitHub' 
+                      : 'Live on App Store'
+                    : 'Coming Soon'}
                 </span>
               </div>
 
@@ -123,6 +136,15 @@ export default async function ProductPage({ params }: Props) {
                         <path d="M11.624 7.222c-.876 0-2.232-.996-3.66-.96-1.884.024-3.612 1.092-4.584 2.784-1.956 3.396-.504 8.412 1.404 11.172.936 1.344 2.04 2.856 3.504 2.808 1.404-.06 1.932-.912 3.636-.912 1.692 0 2.172.912 3.66.876 1.512-.024 2.472-1.368 3.396-2.724 1.068-1.56 1.512-3.072 1.536-3.156-.036-.012-2.94-1.128-2.976-4.488-.024-2.808 2.292-4.152 2.4-4.212-1.32-1.932-3.348-2.148-4.056-2.196-1.848-.144-3.396 1.008-4.26 1.008zm3.12-2.832c.78-.936 1.296-2.244 1.152-3.54-1.116.048-2.46.744-3.264 1.68-.72.828-1.344 2.16-1.176 3.432 1.236.096 2.508-.636 3.288-1.572z"/>
                       </svg>
                     )}
+                    {product.storeButton.icon === 'github' && (
+                      <Image
+                        src="/images/github-white.svg"
+                        alt="GitHub"
+                        width={20}
+                        height={20}
+                        className="h-5 w-5"
+                      />
+                    )}
                     {product.storeButton.text}
                     <ChevronRight className="h-4 w-4" />
                   </a>
@@ -171,7 +193,7 @@ export default async function ProductPage({ params }: Props) {
               )} */}
 
               {/* Screenshots */}
-              {product.details.screenshots && product.details.screenshots.length > 0 && (
+              {product.details.screenshots && product.details.screenshots.length > 0 && product.id !== "ugcvidgen" && (
                 <section className="mb-16">
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6 inline-flex items-center">
                     <span className="bg-gradient-to-r from-teal-600 to-emerald-600 dark:from-teal-400 dark:to-emerald-400 h-8 w-1 rounded-full mr-3"></span>
@@ -220,8 +242,19 @@ export default async function ProductPage({ params }: Props) {
                 </section>
               )}
 
+              {/* Add UGCVidGenUsage component for the UGCVidGen product */}
+              {product.id === "ugcvidgen" && (
+                <section className="mb-16">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6 inline-flex items-center">
+                    <span className="bg-gradient-to-r from-teal-600 to-emerald-600 dark:from-teal-400 dark:to-emerald-400 h-8 w-1 rounded-full mr-3"></span>
+                    How to Use
+                  </h2>
+                  <UGCVidGenUsage />
+                </section>
+              )}
+
               {/* Testimonials */}
-              {product.details.testimonials && product.details.testimonials.length > 0 && (
+              {product.details.testimonials && product.details.testimonials.length > 0 && product.id !== "ugcvidgen" && (
                 <section className="mb-16">
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6 inline-flex items-center">
                     <span className="bg-gradient-to-r from-teal-600 to-emerald-600 dark:from-teal-400 dark:to-emerald-400 h-8 w-1 rounded-full mr-3"></span>
@@ -264,7 +297,7 @@ export default async function ProductPage({ params }: Props) {
               )}
 
               {/* Pricing */}
-              {product.details.pricing && product.details.pricing.length > 0 && (
+              {product.details.pricing && product.details.pricing.length > 0 && product.id !== "ugcvidgen" && (
                 <section>
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white font-display mb-6 inline-flex items-center">
                     <span className="bg-gradient-to-r from-teal-600 to-emerald-600 dark:from-teal-400 dark:to-emerald-400 h-8 w-1 rounded-full mr-3"></span>

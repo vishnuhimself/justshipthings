@@ -108,6 +108,15 @@ export function ProductCard({ product, index }: ProductCardProps) {
               )}
               {product.storeButton.icon === 'play-store' && <Store className="h-5 w-5" />}
               {product.storeButton.icon === 'web' && <AppWindow className="h-5 w-5" />}
+              {product.storeButton.icon === 'github' && (
+                <Image
+                  src="/images/github-white.svg"
+                  alt="GitHub"
+                  width={20}
+                  height={20}
+                  className="h-5 w-5"
+                />
+              )}
               {product.storeButton.text}
             </motion.a>
           )}
@@ -206,6 +215,15 @@ export function ProductCard({ product, index }: ProductCardProps) {
               )}
               {product.storeButton.icon === 'play-store' && <Store className="h-5 w-5" />}
               {product.storeButton.icon === 'web' && <AppWindow className="h-5 w-5" />}
+              {product.storeButton.icon === 'github' && (
+                <Image
+                  src="/images/github-white.svg"
+                  alt="GitHub"
+                  width={20}
+                  height={20}
+                  className="h-5 w-5"
+                />
+              )}
               {product.storeButton.text}
             </motion.a>
           )}

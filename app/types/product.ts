@@ -23,7 +23,7 @@ export interface Product {
   link: string;
   storeButton: {
     text: string;
-    icon: 'app-store' | 'play-store' | 'web';
+    icon: 'app-store' | 'play-store' | 'web' | 'github';
   };
   tags: string[];
   launchDate: string;
