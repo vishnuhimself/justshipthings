@@ -1,19 +1,106 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+"use client";
+
+import { useState } from "react";
 import { Code } from "@/components/ui/code";
+import { Settings, PlayCircle, FileText, AlertCircle, FileCode } from "lucide-react";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+
+type TabType = "setup" | "usage" | "examples" | "tips" | "prompt";
 
 export function UGCVidGenUsage() {
+  const [activeTab, setActiveTab] = useState<TabType>("setup");
+
+  const tabs = [
+    { id: "setup", label: "Setup", icon: Settings },
+    { id: "usage", label: "Usage", icon: PlayCircle },
+    { id: "examples", label: "Examples", icon: FileText },
+    { id: "tips", label: "Tips", icon: AlertCircle },
+    { id: "prompt", label: "Prompt", icon: FileCode },
+  ] as const;
+
+  const firstRowTabs = tabs.slice(0, 3);
+  const secondRowTabs = tabs.slice(3);
+
   return (
     <div className="mt-8">
-      <Tabs defaultValue="setup">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="setup">Setup</TabsTrigger>
-          <TabsTrigger value="usage">Usage</TabsTrigger>
-          <TabsTrigger value="examples">Examples</TabsTrigger>
-          <TabsTrigger value="tips">Important Tips</TabsTrigger>
-          <TabsTrigger value="prompt">Sample Prompt</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="setup" className="mt-6 space-y-6">
+      <div className="relative mb-4">
+        {/* Desktop tabs - all in one row */}
+        <div className="hidden md:flex md:space-x-2 md:p-1 md:rounded-lg">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as TabType)}
+                className={cn(
+                  "flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all",
+                  activeTab === tab.id
+                    ? "bg-gradient-to-r from-teal-500 to-emerald-500 text-white"
+                    : "bg-gray-100/10 text-gray-300 hover:bg-gray-100/20"
+                )}
+                aria-selected={activeTab === tab.id}
+                role="tab"
+              >
+                <Icon className="w-4 h-4" />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Mobile tabs - 3+2 layout */}
+        <div className="md:hidden space-y-2">
+          <div className="grid grid-cols-3 gap-2">
+            {firstRowTabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as TabType)}
+                  className={cn(
+                    "flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all",
+                    activeTab === tab.id
+                      ? "bg-gradient-to-r from-teal-500 to-emerald-500 text-white"
+                      : "bg-gray-100/10 text-gray-300 hover:bg-gray-100/20"
+                  )}
+                  aria-selected={activeTab === tab.id}
+                  role="tab"
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            {secondRowTabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as TabType)}
+                  className={cn(
+                    "flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all",
+                    activeTab === tab.id
+                      ? "bg-gradient-to-r from-teal-500 to-emerald-500 text-white"
+                      : "bg-gray-100/10 text-gray-300 hover:bg-gray-100/20"
+                  )}
+                  aria-selected={activeTab === tab.id}
+                  role="tab"
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Tab content */}
+      <div className="mt-6 space-y-6">
+        {activeTab === "setup" && (
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Installation</h3>
             <p className="text-gray-600 dark:text-gray-300">
@@ -60,9 +147,9 @@ cd UGCVidGen`}
               </div>
             </div>
           </div>
-        </TabsContent>
+        )}
         
-        <TabsContent value="usage" className="mt-6 space-y-6">
+        {activeTab === "usage" && (
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Running UGCVidGen</h3>
             
@@ -107,9 +194,9 @@ TARGET_RESOLUTION = (1080, 1920)  # 9:16 aspect ratio`}
               </ul>
             </div>
           </div>
-        </TabsContent>
+        )}
         
-        <TabsContent value="examples" className="mt-6 space-y-6">
+        {activeTab === "examples" && (
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Example Workflows</h3>
             
@@ -168,9 +255,9 @@ text_clip_args = {
               </Code>
             </div>
           </div>
-        </TabsContent>
+        )}
         
-        <TabsContent value="tips" className="mt-6 space-y-6">
+        {activeTab === "tips" && (
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Important Tips for Best Results</h3>
             
@@ -211,9 +298,9 @@ text_clip_args = {
               </p>
             </div>
           </div>
-        </TabsContent>
+        )}
         
-        <TabsContent value="prompt" className="mt-6 space-y-6">
+        {activeTab === "prompt" && (
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Sample AI Video Prompt</h3>
             
@@ -268,10 +355,13 @@ Key Elements:
                   This prompt was used to generate a video similar to:
                 </p>
                 <div className="relative aspect-[9/16] overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-900/10 dark:ring-white/10 shadow-md">
-                  <img 
+                  <Image 
                     src="/images/UGCVidGen/UGC.png" 
                     alt="Sample UGC video frame" 
-                    className="object-cover w-full h-full"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 400px"
+                    className="object-cover"
+                    priority
                   />
                 </div>
               </div>
@@ -288,8 +378,8 @@ Key Elements:
               </div>
             </div>
           </div>
-        </TabsContent>
-      </Tabs>
+        )}
+      </div>
     </div>
   );
 } 

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ThemeSwitcher } from './theme-switcher';
 import { Mail, Link as LinkIcon, Menu, X, Twitter } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -75,13 +74,11 @@ export function Header() {
               >
                 <Mail className="h-[1.2rem] w-[1.2rem] text-gray-700 dark:text-gray-300" />
               </motion.a>
-              <ThemeSwitcher />
             </div>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-3">
-            <ThemeSwitcher />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center transition-colors hover:bg-gray-200 dark:hover:bg-gray-700"
