@@ -72,13 +72,13 @@ export default async function ProductPage({ params }: Props) {
               <div className="mb-8 flex justify-center">
                 <span className={`inline-flex items-center rounded-full px-4 py-1 text-sm font-medium
                   ${product.status === 'live' 
-                    ? product.storeButton?.icon === 'web' 
+                    ? product.storeButton?.icon === 'github' 
                       ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400' 
                       : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400'
                     : 'bg-yellow-50 text-yellow-700 dark:bg-yellow-500/10 dark:text-yellow-400'}`}
                 >
                   {product.status === 'live' 
-                    ? product.storeButton?.icon === 'web' 
+                    ? product.storeButton?.icon === 'github' 
                       ? 'Available on GitHub' 
                       : 'Live on App Store'
                     : 'Coming Soon'}
