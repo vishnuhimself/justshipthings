@@ -1,6 +1,6 @@
 import { Header } from '@/app/components/header';
 
-export default function PrivacyLayout({
+export default function SupportLayout({
   children,
 }: {
   children: React.ReactNode;

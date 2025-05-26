@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { Mail, Link as LinkIcon, Menu, X, Twitter } from 'lucide-react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -23,71 +22,63 @@ export function Header() {
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
         scrolled 
-          ? 'bg-white/90 dark:bg-gray-950/90 backdrop-blur-md shadow-sm dark:shadow-gray-950/50' 
-          : 'bg-transparent'
+          ? 'bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-100' 
+          : 'bg-white/90 backdrop-blur-sm'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
-            <div className="text-xl font-medium">
+          <Link href="/" className="flex items-center hover:opacity-70 transition-opacity">
+            <div className="text-lg font-semibold text-gray-900">
               just
-              <span className="text-teal-500 font-bold">ship</span>
+              <span className="text-gray-900 font-bold">ship</span>
               things
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
-            <div className="flex items-center gap-3">
-              <motion.a
-                href="https://x.com/VishHimself"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center transition-colors hover:bg-teal-100 dark:hover:bg-teal-900/30 hover:text-teal-600 dark:hover:text-teal-400"
-                aria-label="Follow me on X (Twitter)"
-              >
-                <Twitter className="h-[1.2rem] w-[1.2rem] text-gray-700 dark:text-gray-300" />
-              </motion.a>
-              <motion.a
-                href="https://heyvish.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center transition-colors hover:bg-teal-100 dark:hover:bg-teal-900/30 hover:text-teal-600 dark:hover:text-teal-400"
-                aria-label="Visit heyvish.com"
-              >
-                <LinkIcon className="h-[1.2rem] w-[1.2rem] text-gray-700 dark:text-gray-300" />
-              </motion.a>
-              <motion.a
-                href="mailto:hey@heyvish.com"
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center transition-colors hover:bg-teal-100 dark:hover:bg-teal-900/30 hover:text-teal-600 dark:hover:text-teal-400"
-                aria-label="Contact via email"
-              >
-                <Mail className="h-[1.2rem] w-[1.2rem] text-gray-700 dark:text-gray-300" />
-              </motion.a>
-            </div>
+          <div className="hidden md:flex items-center gap-2">
+            <a
+              href="https://x.com/VishHimself"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+              aria-label="Follow me on X (Twitter)"
+            >
+              <Twitter className="h-4 w-4 text-gray-600" />
+            </a>
+            <a
+              href="https://heyvish.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+              aria-label="Visit heyvish.com"
+            >
+              <LinkIcon className="h-4 w-4 text-gray-600" />
+            </a>
+            <a
+              href="mailto:hey@heyvish.com"
+              className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+              aria-label="Contact via email"
+            >
+              <Mail className="h-4 w-4 text-gray-600" />
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center gap-3">
+          <div className="flex md:hidden items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center transition-colors hover:bg-gray-200 dark:hover:bg-gray-700"
+              className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             >
               {mobileMenuOpen ? (
-                <X className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                <X className="h-4 w-4 text-gray-600" />
               ) : (
-                <Menu className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                <Menu className="h-4 w-4 text-gray-600" />
               )}
             </button>
           </div>
@@ -95,85 +86,44 @@ export function Header() {
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden fixed top-16 left-0 right-0 bg-white/95 dark:bg-gray-950/95 backdrop-blur-sm border-t border-gray-100 dark:border-gray-800 shadow-sm z-50"
-          >
-            <div className="px-4 py-6 flex justify-end">
-              <div className="flex items-center gap-4">
-                <motion.a
-                  href="https://x.com/VishHimself"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center transition-colors hover:bg-teal-100 dark:hover:bg-teal-900/30 hover:text-teal-600 dark:hover:text-teal-400"
-                  aria-label="Follow me on X (Twitter)"
-                  onClick={() => setMobileMenuOpen(false)}
-                  initial={{ opacity: 0, x: 50, rotate: -10 }}
-                  animate={{ opacity: 1, x: 0, rotate: 0 }}
-                  exit={{ opacity: 0, x: 50, rotate: 10 }}
-                  transition={{ 
-                    type: "spring", 
-                    stiffness: 300, 
-                    damping: 25,
-                    delay: 0.1 
-                  }}
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Twitter className="h-5 w-5 text-gray-700 dark:text-gray-300" />
-                </motion.a>
-                
-                <motion.a
-                  href="https://heyvish.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center transition-colors hover:bg-teal-100 dark:hover:bg-teal-900/30 hover:text-teal-600 dark:hover:text-teal-400"
-                  aria-label="Visit heyvish.com"
-                  onClick={() => setMobileMenuOpen(false)}
-                  initial={{ opacity: 0, x: 50, rotate: -10 }}
-                  animate={{ opacity: 1, x: 0, rotate: 0 }}
-                  exit={{ opacity: 0, x: 50, rotate: 10 }}
-                  transition={{ 
-                    type: "spring", 
-                    stiffness: 300, 
-                    damping: 25,
-                    delay: 0.2 
-                  }}
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <LinkIcon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
-                </motion.a>
-                
-                <motion.a
-                  href="mailto:hey@heyvish.com"
-                  className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center transition-colors hover:bg-teal-100 dark:hover:bg-teal-900/30 hover:text-teal-600 dark:hover:text-teal-400"
-                  aria-label="Contact via email"
-                  onClick={() => setMobileMenuOpen(false)}
-                  initial={{ opacity: 0, x: 50, rotate: -10 }}
-                  animate={{ opacity: 1, x: 0, rotate: 0 }}
-                  exit={{ opacity: 0, x: 50, rotate: 10 }}
-                  transition={{ 
-                    type: "spring", 
-                    stiffness: 300, 
-                    damping: 25,
-                    delay: 0.3 
-                  }}
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Mail className="h-5 w-5 text-gray-700 dark:text-gray-300" />
-                </motion.a>
-              </div>
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white border-t border-gray-100 shadow-sm">
+          <div className="px-6 py-4 flex justify-end">
+            <div className="flex items-center gap-2">
+              <a
+                href="https://x.com/VishHimself"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                aria-label="Follow me on X (Twitter)"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Twitter className="h-4 w-4 text-gray-600" />
+              </a>
+              
+              <a
+                href="https://heyvish.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                aria-label="Visit heyvish.com"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <LinkIcon className="h-4 w-4 text-gray-600" />
+              </a>
+              
+              <a
+                href="mailto:hey@heyvish.com"
+                className="w-10 h-10 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                aria-label="Contact via email"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Mail className="h-4 w-4 text-gray-600" />
+              </a>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
     </header>
   );
 } 

@@ -79,36 +79,36 @@ export function FloatingMenu() {
             animate="visible"
             exit="exit"
             variants={menuVariants}
-            className="w-72 rounded-2xl bg-white dark:bg-gray-900 shadow-xl ring-1 ring-gray-200 dark:ring-gray-800 overflow-hidden"
+            className="w-72 rounded-xl bg-white shadow-lg border border-gray-200 overflow-hidden"
           >
             <div className="p-3 space-y-1">
               {products.map((product) => (
                 <Link
                   key={product.id}
                   href={`/products/${product.id}`}
-                  className="flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="flex items-center gap-3 rounded-lg p-3 transition-colors hover:bg-gray-50"
                   onClick={() => setIsOpen(false)}
                 >
-                  <div className="relative h-12 w-12 flex items-center justify-center overflow-hidden rounded-xl shadow-sm">
+                  <div className="relative h-12 w-12 flex items-center justify-center overflow-hidden rounded-lg border border-gray-200">
                     <Image
                       src={product.iconUrl}
                       alt={product.name}
                       width={40}
                       height={40}
-                      className="object-contain rounded-lg"
+                      className="object-contain rounded-md"
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-gray-900 dark:text-white truncate">
+                    <p className="font-medium text-gray-900 truncate">
                       {product.name}
                     </p>
                     <div className="flex items-center gap-2">
                       <span className={`h-1.5 w-1.5 rounded-full ${
                         product.status === 'live' 
-                          ? 'bg-emerald-500' 
+                          ? 'bg-green-500' 
                           : 'bg-yellow-500'
                       }`} />
-                      <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                      <p className="text-sm text-gray-500 truncate">
                         {product.status === 'live' ? 'Available now' : 'Coming soon'}
                       </p>
                     </div>
@@ -116,12 +116,12 @@ export function FloatingMenu() {
                 </Link>
               ))}
             </div>
-            <div className="p-3 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-800">
+            <div className="p-3 bg-gray-50 border-t border-gray-200">
               <Link
                 href="https://heyvish.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full py-2 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="flex items-center justify-center gap-2 w-full py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"
                 onClick={() => setIsOpen(false)}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 mr-1">
@@ -141,9 +141,7 @@ export function FloatingMenu() {
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="flex items-center gap-2 px-4 py-3 rounded-full bg-gradient-to-r from-teal-500 to-emerald-500 
-                 hover:from-teal-600 hover:to-emerald-600 text-white shadow-lg hover:shadow-xl 
-                 hover:shadow-teal-500/20 transition-all duration-300 cursor-pointer"
+        className="flex items-center gap-2 px-4 py-3 rounded-full bg-gray-900 hover:bg-gray-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
         aria-label={isOpen ? "Close menu" : "Explore products"}
       >
         <motion.div
